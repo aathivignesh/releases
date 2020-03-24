@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SAMPLE Releases</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+div.static {
+    position: static;
+    float: right;
+}
+
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-top: 0;
+  border-bottom-width:2px;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+  
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- navigation bar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <a class="navbar-brand" >
+      <img src="/favicon.ico" style ="display: block; top:1px; position:absolute; left:5px;">
+      </a>
+      <a class="navbar-brand" style ="margin-left: 15px;">SAMPLE Releases</a>
+      
+    </div>
+    <ul class="nav navbar-nav"
+    >
+      <li class="active"><a href="/admin/home">Home</a></li>      
+      <li><a href="/oldsprintrelease">Old Releases</a></li>
+	  <li><a href="/Bugfix">BugFix Releases</a></li>
+	  <li><a href="/Bugfixissue">Bugfix Issue</a></li>
+    </ul>
+
+    
+
+    <div class="navbar-brand" style="margin-left: 900px">
+                <!--<input type="text" th:value="${userName}" id="logusername"> -->
+                <p th:text="${userName}" id="logusername"></p>
+            </div>
+     <div class="nav navbar-nav" style="float: right;">
+
+    <form th:action="@{/logout}" method="get">
+        <button class="btn btn-primary" name="registration" style="float:right; margin-top: 10px; background-color: #D88B3E; border-color: #D88B3E;"  type="Submit">Logout</button>
+    </form>
+</div>
+  </div>
+</nav>
+<!-- navigation bar -->
+
+
+
+
+
+<!-- Add and update button / Modal -->
+<div class="static">
+
+
+<button type="button" class="btn btn-primary" style="margin-right: 10px;" onclick="exportToExcel('myTable')" >Export All</button>
+
+
+</div>
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Release</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addrelease">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">buildversion</label>
+            <input type="text"  id="buildversion" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">defects</label>
+            <input type="text" id="defects" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">userstories</label>
+            <input type="text" id="userstories" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">svnversion</label>
+            <input type="text" id="svnversion" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">lastupdatedby</label>
+            <input type="text" id="lastupdatedby" class="form-control">
+          </div>
+          
+          <div class="modal-footer">
+        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        	
+        	<button onclick="createrelease()" class="btn btn-secondary" >Submit</button>
+      	</div>     	     	
+          </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Release</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addrelease">
+          
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">defects</label>
+            <input type="text" id="updatedefects" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">userstories</label>
+            <input type="text" id="updateuserstories" class="form-control">
+          </div>     
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">lastupdatedby</label>
+            <input type="text" th:value="${userName}" id="updatelastupdatedby" readonly class="form-control">
+          </div>          
+          <div class="modal-footer">
+        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        	
+        	<button onclick="updaterelease()" class="btn btn-secondary" >Submit</button>
+      	</div>     	     	
+          </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Add and update button / Modal -->
+
+<!-- Table for releases -->
+<div class="container">
+<h2>Current Sprint Releases</h2>           
+<table id="myTable" class="table table-bordered table-striped">
+  <thead>
+    <tr scope="row">
+      <th scope="col">id</th>
+      <th scope="col">Date</th>
+      <th scope="col">BuildVersion</th>
+      <th scope="col">Defects</th>
+      <th scope="col">UserStories</th>
+      <th scope="col">SVN_Version</th>
+      <th scope="col">LastUpdatedBy</th>        
+    </tr>
+  </thead>
+</table>
+</div>
+<!-- Table for releases -->
+
+<script src ="/jquery-3.3.1.js"></script>
+
+
+<script src="/scriptold.js"></script>
+
+
+
+</body>
+</html> 

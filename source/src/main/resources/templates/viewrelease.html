@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SAMPLE Releases</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+div.static {
+    position: static;
+    float: right;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- navigation bar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <a class="navbar-brand" >
+      <img src="/favicon.ico" style ="display: block; top:1px; position:absolute; left:5px;">
+      </a>
+      <a class="navbar-brand" style ="margin-left: 15px;">SAMPLE Releases</a>
+      
+    </div>
+    <ul class="nav navbar-nav"
+    >
+      <li class="active"><a href="/admin/home">Home</a></li>
+      <li><a href="/viewoldrelease">View</a></li>
+      <li><a href="/oldsprintrelease">Old Releases</a></li>
+      <li><a href="/Bugfix">BugFix Releases</a></li>
+      <li><a href="/prodnagios">Prod Nagios</a></li
+    </ul>
+
+    
+
+    <div class="navbar-brand" style="margin-left: 900px">
+                <!--<input type="text" th:value="${userName}" id="logusername"> -->
+                <p th:text="${userName}" id="logusername"></p>
+            </div>
+     <div class="nav navbar-nav" style="float: right;">
+
+    <form th:action="@{/logout}" method="get">
+        <button class="btn btn-primary" name="registration" style="float:right; margin-top: 10px; background-color: #D88B3E; border-color: #D88B3E;"  type="Submit">Logout</button>
+    </form>
+</div>
+  </div>
+</nav>
+<!-- navigation bar -->
+
+
+<div class="container">
+<h2>Previous Releases</h2>           
+<table class="table table-striped">
+  <thead>
+    <tr scope="row">
+      <th scope="col">id</th>
+      <th scope="col">BuildVersion</th>
+      <th scope="col">Defects</th>
+      <th scope="col">UserStories</th>
+      <th scope="col">SVN_Version</th>
+      <th scope="col">LastUpdatedBy</th>        
+    </tr>
+  </thead>
+</table>
+</div>
+
+<script src ="jquery-3.3.1.js"></script>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			url:"/oldrelease",
+			dataType:"json",			
+			success: function (data){	
+				var jsonobj = data;		
+				for(var i = 0; i < jsonobj.length; i++)
+				{
+				    var value = jsonobj[i];
+				    var record="<tr><td>"+value.id+"</td><td>" +value.buildversion+ "</td><td>" +value.defects+ "</td><td>" +value.userstories+ "</td><td>" +value.svnversion+ "</td><td>" +value.lastupdatedby+ "</td></tr>";
+				    $("table").append(record);
+				}				
+			}
+		});
+		
+	});
+</script>
+
+</body>
+</html> 

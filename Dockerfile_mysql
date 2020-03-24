@@ -1,0 +1,9 @@
+FROM mysql/mysql-server
+ENV MYSQL_ROOT_PASSWORD=mysql
+
+VOLUME ["/var/lib/mysql/"]
+
+COPY ./sql_scripts/ /docker-entrypoint-initdb.d/
+
+
+EXPOSE 3306
