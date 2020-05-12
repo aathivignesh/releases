@@ -16,4 +16,5 @@ docker network create app_bridge -d bridge
 # Run containers in mentioned order
 
 docker run -d --name=mysql1 --network=app_bridge -p 3306:3306 mysqlserver
+# Run containers in mentioned order
 docker run -d --name=appserver1 --network=app_bridge -p 80:80 mavenjdk 
