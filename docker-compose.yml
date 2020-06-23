@@ -1,0 +1,28 @@
+version: '3'
+services:
+  appserver1:
+    container_name: appserver1
+    image: mavenjdk:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ghost-volume:/var/lib/ghost
+    networks:
+      - app_bridge
+    depends_on:
+      - mysql1
+
+  mysql1:
+    container_name: mysql1
+    image: mysqlserver
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    networks:
+      - app_bridge 
+
+volumes:
+  ghost-volume:
+  mysql-volume:
+
+networks:
+  app_bridge:
