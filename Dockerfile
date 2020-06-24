@@ -6,5 +6,5 @@ COPY ./source /home/src/
 WORKDIR /home/src
 RUN chmod -R 777 *
 RUN mvn clean package
-EXPOSE 9200
+EXPOSE 80
 ENTRYPOINT ["java","-jar","target/releases-0.0.1-SNAPSHOT.jar"]
